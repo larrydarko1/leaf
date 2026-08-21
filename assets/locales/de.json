@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "Deutsch"
+    "name": "Deutsch",
+    "dictationLanguage": "de"
   },
   "app": {
     "select_folder_description": "Wähle einen Ordner aus, der als dein Notizarchiv verwendet werden soll. Du kannst dies später in den Einstellungen ändern.",

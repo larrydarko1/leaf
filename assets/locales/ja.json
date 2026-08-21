@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "日本語"
+    "name": "日本語",
+    "dictationLanguage": "ja"
   },
   "app": {
     "select_folder_description": "ノートの保管庫として使用するフォルダを選択してください。後から設定で変更できます。",

@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "Español"
+    "name": "Español",
+    "dictationLanguage": "es"
   },
   "app": {
     "select_folder_description": "Selecciona una carpeta para usar como tu almacén de notas. Puedes cambiarla más tarde en los ajustes.",

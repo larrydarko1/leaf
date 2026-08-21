@@ -6,7 +6,7 @@ import * as jsoncParser from 'jsonc-eslint-parser';
  * `meta.name` is the locale's endonym, read as a plain property by the main process
  * (src/main/services/language.ts) to label the language picker.
  */
-const UNSCANNED_KEYS = ['meta.name'];
+const UNSCANNED_KEYS = ['meta.name', 'meta.dictationLanguage'];
 
 export default [
     {

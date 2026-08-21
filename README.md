@@ -23,7 +23,7 @@ Leaf is a **local-first, privacy-focused note-taking app** for desktop built wit
 - **Video support** - Play videos directly in the app (`.mp4`, `.webm`, `.ogg`, `.mov`, `.avi`, `.mkv`)
 - **Audio support** - Play audio files directly in the app (`.mp3`, `.wav`, `.flac`, `.aac`, `.m4a`, `.ogg`, `.wma`, `.aiff`)
 - **Audio recording** - Record voice notes directly in the app and save as `.wav` files to your vault
-- **Speech-to-text dictation** - Dictate into `.txt` and `.md` files using local Whisper speech recognition with automatic language detection — no cloud, no API keys
+- **Speech-to-text dictation** - Dictate into `.txt` and `.md` files using local Whisper speech recognition; transcribes in the language your app is set to — no cloud, no API keys
 - **File browser** - Navigate your notes with a tree-based folder structure
 - **Obsidian-style media embeds** - Use `![[image.png]]` syntax in Markdown to embed images, videos, audio, and PDFs inline — fully interoperable with Obsidian vaults
 - **Drag & drop embed** - Drag media files from the file explorer onto a Markdown note to automatically insert embed syntax
@@ -55,7 +55,7 @@ Leaf is a **local-first, privacy-focused note-taking app** for desktop built wit
 ### Design
 
 - **Obsidian-inspired UI** - Clean, familiar interface
-- **Multi-language support** - Built-in English and Italian with easy language switching; add your own translations
+- **Multi-language support** - 14 built-in languages with easy language switching; add your own translations
 - **Theme customization** - 20+ built-in color themes; drop in your own for automatic detection
 
 ## Security & Privacy
@@ -164,17 +164,27 @@ To switch languages:
     - Use the format from `~/.leaf/locales/en.json` as a template
     - Restart the app — your new language appears in the language picker
 
-Language file format:
+Language file format — translation keys are grouped, and a `meta` block describes the language itself:
 
 ```json
 {
-    "theme": "Theme",
-    "language": "Language",
-    "vault": "Vault",
-    "notes": "Notes"
-    // ... more translation keys
+    "meta": {
+        "name": "Français",
+        "dictationLanguage": "fr"
+    },
+    "app": {
+        "select_folder": "Sélectionner un dossier"
+    }
+    // ... more translation groups
 }
 ```
+
+The two `meta` fields:
+
+| Field               | Purpose                                                                                                                                                                                                                                                                                           |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`              | How the language is labelled in the picker, written in itself (e.g. `Français`). Falls back to the file name if omitted.                                                                                                                                                                          |
+| `dictationLanguage` | The language [dictation](#using-dictation-speech-to-text) transcribes in — a [Whisper language code](https://github.com/openai/whisper#available-models-and-languages) such as `fr`. Leave it `""` if there is no sensible match, and dictation will detect the language from your voice instead. |
 
 For a complete list of translation keys, check `~/.leaf/locales/en.json`.
 
@@ -212,11 +222,15 @@ Leaf includes a built-in speech-to-text feature powered by [Whisper](https://git
 4. Speak naturally — your speech is transcribed and appended to the file every ~5 seconds
 5. Click the microphone again to stop dictation
 
+**Which language it transcribes in.** Dictation follows the language the app is set to, so if the UI is Italian it transcribes Italian. Each locale file declares this via `meta.dictationLanguage` (see [Languages & Localization](#languages--localization)). Guessing the language from a few seconds of audio is unreliable — a bad guess produces gibberish — so it is only used as a fallback, for locales that declare no usable language (custom ones you have written yourself, or languages Whisper does not support, such as Esperanto).
+
+If you speak a different language than your UI is set to, set `meta.dictationLanguage` in that locale file to the language you actually dictate in. For example, keep the app in English but transcribe Italian by putting `"dictationLanguage": "it"` in `~/.leaf/locales/en.json`.
+
 > **The Whisper ONNX model files are not included in this repository.** Before using dictation you need to download them manually — see the [setup step](#speech-to-text-model-setup) below.
 
 #### Speech-to-Text Model Setup
 
-The app uses [`Xenova/whisper-base`](https://huggingface.co/Xenova/whisper-base) from Hugging Face — a multilingual model that **automatically detects the spoken language** without any configuration. Download the two required quantized ONNX files and place them at the exact paths shown:
+The app uses [`Xenova/whisper-base`](https://huggingface.co/Xenova/whisper-base) from Hugging Face — a multilingual model covering 99 languages. Download the two required quantized ONNX files and place them at the exact paths shown:
 
 ```
 models/whisper/Xenova/whisper-base/onnx/encoder_model_quantized.onnx
