@@ -10,7 +10,13 @@ import type {
     ConversationCreateResult,
     ConversationLoadResult,
 } from '@/schemas/ai';
-import type { SpeechInitResult, SpeechTranscribeResult, SpeechStatus, SpeechStatusEvent } from '@/schemas/speech';
+import type {
+    SpeechInitResult,
+    SpeechTranscribeResult,
+    SpeechResetSessionResult,
+    SpeechStatus,
+    SpeechStatusEvent,
+} from '@/schemas/speech';
 import type {
     ScanResult,
     FileReadResult,
@@ -154,6 +160,7 @@ export type ElectronAPI = {
     speechInit: () => Promise<SpeechInitResult>;
     speechTranscribe: (audioData: number[]) => Promise<SpeechTranscribeResult>;
     speechGetStatus: () => Promise<SpeechStatus>;
+    speechResetSession: () => Promise<SpeechResetSessionResult>;
     onSpeechStatus: (callback: (status: SpeechStatusEvent) => void) => void;
     removeSpeechStatusListener: () => void;
 };

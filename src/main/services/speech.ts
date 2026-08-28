@@ -9,6 +9,7 @@ import type { pipeline as PipelineFn } from '@huggingface/transformers';
 import path from 'path';
 import { existsSync } from 'fs';
 import { getWhisperModelDir } from '@/main/lib/paths';
+import { findActiveDictationLanguage } from '@/main/services/language';
 import { log } from '@/main/lib/logger';
 import type { Transcriber, TranscriptionResult, TransformersModule } from '@/schemas/vault';
 
@@ -27,19 +28,24 @@ type WhisperPipeline = {
 // Whisper decoder_start_token_id — constant across all Whisper models
 const WHISPER_SOT = 50258;
 
+// Below this RMS a chunk is silence or room tone — too weak to detect a language from
+const MIN_DETECTION_RMS = 0.005;
+const MIN_DETECTION_SAMPLES = 16000;
+
 let pipelineFn: typeof PipelineFn | null = null;
 let transcriber: Transcriber | null = null;
 let isModelLoading = false;
 let isModelReady = false;
 
-// undefined = not yet attempted; null = attempted but failed; string = detected language code
-let detectedLanguage: string | null | undefined = undefined;
+let supportedLanguages: Set<string> | null = null;
+let sessionLanguage: string | null = null;
 
 export function cleanup(): void {
     transcriber = null;
     isModelReady = false;
     isModelLoading = false;
-    detectedLanguage = undefined;
+    supportedLanguages = null;
+    sessionLanguage = null;
 }
 
 export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | null): void {
@@ -55,6 +61,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         },
     );
     ipc.handle('speech:getStatus', (): { isModelLoaded: boolean; isModelLoading: boolean } => getStatus());
+    ipc.handle('speech:resetSession', (): { success: boolean } => resetSession());
 }
 
 /**
@@ -119,6 +126,7 @@ async function initModel(
             dtype: 'q8',
         })) as Transcriber;
 
+        supportedLanguages = readSupportedLanguages();
         isModelReady = true;
         isModelLoading = false;
 
@@ -145,6 +153,46 @@ async function initModel(
 
         return { success: false, error: (error as Error).message };
     }
+}
+
+/** The `<|xx|>` keys of the model's own language table, as bare codes. */
+function readSupportedLanguages(): Set<string> | null {
+    try {
+        const langToId = (transcriber as unknown as WhisperPipeline).model.generation_config.lang_to_id;
+        const codes = new Set<string>();
+        for (const langKey of Object.keys(langToId)) {
+            const match = /\|(.+)\|/.exec(langKey);
+            if (match !== null) codes.add(match[1]);
+        }
+        return codes.size > 0 ? codes : null;
+    } catch (err) {
+        log.warn('[Speech] Could not read model language table:', err);
+        return null;
+    }
+}
+
+async function resolveLanguage(float32Audio: Float32Array): Promise<string | null> {
+    const declared = (await findActiveDictationLanguage())?.toLowerCase() ?? null;
+    if (declared !== null && supportedLanguages !== null && supportedLanguages.has(declared)) {
+        return declared;
+    }
+    if (sessionLanguage !== null) return sessionLanguage;
+    // A guess made on silence would poison the whole session — wait for a chunk with speech in it
+    if (!hasSpeechSignal(float32Audio)) return null;
+
+    if (declared !== null) {
+        log.warn('[Speech] Locale declares an unsupported dictation language, detecting instead:', declared);
+    }
+    sessionLanguage = await detectLanguage(float32Audio);
+    return sessionLanguage;
+}
+
+/** True when the chunk is long and loud enough to be worth detecting a language from. */
+function hasSpeechSignal(float32Audio: Float32Array): boolean {
+    if (float32Audio.length < MIN_DETECTION_SAMPLES) return false;
+    let sumSquares = 0;
+    for (const sample of float32Audio) sumSquares += sample * sample;
+    return Math.sqrt(sumSquares / float32Audio.length) >= MIN_DETECTION_RMS;
 }
 
 /**
@@ -199,18 +247,14 @@ async function transcribe(audioData: number[]): Promise<{ success: boolean; text
     try {
         const float32Audio = new Float32Array(audioData);
 
-        // Detect language on the first transcription call and cache it for the session.
-        // Reset happens in cleanup() when the model is unloaded.
-        if (detectedLanguage === undefined) {
-            detectedLanguage = await detectLanguage(float32Audio);
-        }
+        const language = await resolveLanguage(float32Audio);
 
         const call = transcriber as unknown as (
             audio: Float32Array,
             options: Record<string, unknown>,
         ) => Promise<unknown>;
 
-        const options: Record<string, unknown> = detectedLanguage !== null ? { language: detectedLanguage } : {};
+        const options: Record<string, unknown> = language !== null ? { language } : {};
         const result = (await call(float32Audio, options)) as TranscriptionResult;
         const text = typeof result === 'string' ? result : (result.text ?? '');
         return { success: true, text: text.trim() };
@@ -222,4 +266,10 @@ async function transcribe(audioData: number[]): Promise<{ success: boolean; text
 
 function getStatus(): { isModelLoaded: boolean; isModelLoading: boolean } {
     return { isModelLoaded: isModelReady, isModelLoading };
+}
+
+/** Clears the detected-language fallback so the next dictation run starts fresh. */
+function resetSession(): { success: boolean } {
+    sessionLanguage = null;
+    return { success: true };
 }

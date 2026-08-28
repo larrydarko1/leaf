@@ -135,6 +135,7 @@ const api: ElectronAPI = {
     speechInit: () => ipcRenderer.invoke('speech:init'),
     speechTranscribe: (audioData: number[]) => ipcRenderer.invoke('speech:transcribe', audioData),
     speechGetStatus: () => ipcRenderer.invoke('speech:getStatus'),
+    speechResetSession: () => ipcRenderer.invoke('speech:resetSession'),
     onSpeechStatus: (callback: (status: SpeechStatusEvent) => void) => {
         ipcRenderer.on('speech:status', (_event, status: SpeechStatusEvent) => callback(status));
     },

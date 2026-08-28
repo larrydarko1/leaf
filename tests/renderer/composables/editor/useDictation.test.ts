@@ -92,6 +92,7 @@ vi.stubGlobal('clearInterval', vi.fn());
 const mockSpeechGetStatus = vi.fn().mockResolvedValue({ isModelLoaded: true });
 const mockSpeechInit = vi.fn().mockResolvedValue({ success: true });
 const mockSpeechTranscribe = vi.fn().mockResolvedValue({ success: true, text: 'hello world' });
+const mockSpeechResetSession = vi.fn().mockResolvedValue({ success: true });
 const mockLog = { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() };
 
 Object.defineProperty(globalThis, 'window', {
@@ -101,6 +102,7 @@ Object.defineProperty(globalThis, 'window', {
             speechGetStatus: mockSpeechGetStatus,
             speechInit: mockSpeechInit,
             speechTranscribe: mockSpeechTranscribe,
+            speechResetSession: mockSpeechResetSession,
             log: mockLog,
         },
         setInterval: vi.fn((fn: () => void, _ms: number) => {

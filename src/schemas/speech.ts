@@ -16,6 +16,12 @@ export const SpeechTranscribeResultSchema = z.object({
 
 export type SpeechTranscribeResult = z.infer<typeof SpeechTranscribeResultSchema>;
 
+export const SpeechResetSessionResultSchema = z.object({
+    success: z.boolean(),
+});
+
+export type SpeechResetSessionResult = z.infer<typeof SpeechResetSessionResultSchema>;
+
 export const SpeechStatusSchema = z.object({
     isModelLoaded: z.boolean(),
     isModelLoading: z.boolean(),
