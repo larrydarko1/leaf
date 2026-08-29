@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "中文"
+    "name": "中文",
+    "dictationLanguage": "zh"
   },
   "app": {
     "select_folder_description": "选择一个文件夹作为您的笔记库。您可以稍后在设置中更改此项。",

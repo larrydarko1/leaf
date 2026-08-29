@@ -156,6 +156,21 @@ export async function loadLanguageContent(id: string): Promise<{
     }
 }
 
+export async function findActiveDictationLanguage(): Promise<string | null> {
+    const state = await readState();
+    const id = state.activeLanguage;
+    if (typeof id !== 'string' || !isValidLanguageId(id)) return null;
+
+    const result = await loadLanguageContent(id);
+    if (result.content === undefined) return null;
+
+    const meta = result.content.meta;
+    if (!isPlainObject(meta)) return null;
+
+    const code = meta.dictationLanguage;
+    return typeof code === 'string' && code.trim() !== '' ? code.trim() : null;
+}
+
 export function isValidLanguageId(id: string): boolean {
     return typeof id === 'string' && LANGUAGE_ID_PATTERN.test(id);
 }

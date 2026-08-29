@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "Esperanto"
+    "name": "Esperanto",
+    "dictationLanguage": "en" 
   },
   "app": {
     "select_folder_description": "Elektu dosierujon por uzi kiel vian notarkivon. Vi povas ŝanĝi tion poste en agordoj.",

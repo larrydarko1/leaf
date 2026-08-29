@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "Italiano"
+    "name": "Italiano",
+    "dictationLanguage": "it"
   },
   "app": {
     "select_folder_description": "Seleziona una cartella da usare come archivio delle note. Puoi modificarla in seguito nelle impostazioni.",

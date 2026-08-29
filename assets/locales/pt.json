@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "Português"
+    "name": "Português",
+    "dictationLanguage": "pt"
   },
   "app": {
     "select_folder_description": "Selecione uma pasta para usar como o seu cofre de notas. Pode alterá-la mais tarde nas definições.",

@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "Français"
+    "name": "Français",
+    "dictationLanguage": "fr"
   },
   "app": {
     "select_folder_description": "Sélectionnez un dossier à utiliser comme coffre de notes. Vous pourrez le modifier plus tard dans les paramètres.",

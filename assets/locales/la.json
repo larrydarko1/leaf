@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "Latina"
+    "name": "Latina",
+    "dictationLanguage": "la"
   },
   "app": {
     "select_folder_description": "Fasciculum elige quo utaris ut arca notarum tuarum. Hoc postea in ordinationibus mutare potes.",

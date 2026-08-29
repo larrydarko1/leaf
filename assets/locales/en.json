@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "English"
+    "name": "English",
+    "dictationLanguage": "en"
   },
   "app": {
     "select_folder_description": "Select a folder to use as your notes vault. You can change this later in settings.",

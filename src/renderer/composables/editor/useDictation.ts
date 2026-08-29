@@ -63,6 +63,11 @@ export function useDictation(
             isDictationLoading.value = false;
         }
 
+        // Reset on start, not on stop — stopDictation still has a trailing chunk in flight.
+        void window.electronAPI.speechResetSession().catch((): void => {
+            // A stale detected language is not worth failing dictation over
+        });
+
         try {
             dictationStream = await navigator.mediaDevices.getUserMedia({
                 audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true },

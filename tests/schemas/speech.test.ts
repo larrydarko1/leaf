@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
     SpeechInitResultSchema,
     SpeechTranscribeResultSchema,
+    SpeechResetSessionResultSchema,
     SpeechStatusSchema,
     SpeechStatusEventSchema,
 } from '@/schemas/speech';
@@ -41,6 +42,16 @@ describe('SpeechTranscribeResultSchema', () => {
 
     it('rejects wrong type for success', () => {
         expect(SpeechTranscribeResultSchema.safeParse({ success: 'yes' }).success).toBe(false);
+    });
+});
+
+describe('SpeechResetSessionResultSchema', () => {
+    it('parses a successful reset', () => {
+        expect(SpeechResetSessionResultSchema.parse({ success: true }).success).toBe(true);
+    });
+
+    it('rejects a missing success flag', () => {
+        expect(() => SpeechResetSessionResultSchema.parse({})).toThrow();
     });
 });
 
