@@ -1,12 +1,9 @@
-/**
- * Global reset and base styles
- *
- * Resets, universal styles, animations, and element defaults
- */
+// Global reset and base styles
+// Resets, universal styles, animations, and element defaults
 
 @use '@/renderer/styles/variables' as *;
 
-/* ––––– Universal box-sizing ––––– */
+// –– Universal box-sizing ––––––––––––––––––––
 
 *,
 *::before,
@@ -14,7 +11,7 @@
     box-sizing: border-box;
 }
 
-/* ––––– Root ––––– */
+// –– Root ––––––––––––––––––––
 
 :root {
     font-family: $font-family;
@@ -28,7 +25,7 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* ––––– Html, Body, App ––––– */
+// –– Html, Body, App ––––––––––––––––––––
 
 html {
     scroll-behavior: smooth;
@@ -47,15 +44,13 @@ html,
     overflow: hidden;
 }
 
-/* ––––– Reduced motion ––––– */
+// –– Reduced motion ––––––––––––––––––––
 
-/**
- * The single escape hatch for every transition and animation in the app. The
- * SFCs declare motion freely; this is what makes all of it opt-out in one place
- * for users who asked the OS for less of it.
- * Kept at 0.01ms rather than `none` so animationend/transitionend still fire —
- * anything that waits on one keeps working instead of hanging.
- */
+// The single escape hatch for every transition and animation in the app. The
+// SFCs declare motion freely; this is what makes all of it opt-out in one place
+// for users who asked the OS for less of it.
+// Kept at 0.01ms rather than `none` so animationend/transitionend still fire —
+// anything that waits on one keeps working instead of hanging.
 @media (prefers-reduced-motion: reduce) {
     /* stylelint-disable declaration-no-important -- a global override has to beat the scoped SFC rules it is overriding; specificity alone cannot reach them. */
     *,
@@ -69,7 +64,7 @@ html,
     /* stylelint-enable declaration-no-important */
 }
 
-/* ––––– Interactive elements ––––– */
+// –– Interactive elements ––––––––––––––––––––
 
 button,
 input,
@@ -81,7 +76,7 @@ a,
     cursor: pointer;
 }
 
-/* ––––– Scrollbar ––––– */
+// –– Scrollbar ––––––––––––––––––––
 
 ::-webkit-scrollbar {
     width: 6px;
@@ -102,7 +97,7 @@ a,
     }
 }
 
-/* ––––– Focus & Selection ––––– */
+// –– Focus & Selection ––––––––––––––––––––
 
 :focus-visible {
     outline: 1.5px solid $accent-color;
@@ -115,7 +110,7 @@ a,
     color: $text1;
 }
 
-/* ––––– Accessibility related ––––– */
+// –– Accessibility related ––––––––––––––––––––
 .sr-only {
     position: absolute;
     width: 1px;
@@ -128,7 +123,7 @@ a,
     border-width: 0;
 }
 
-/* ––– Animations ––– */
+// –– Animations ––––––––––––––––––––
 
 @keyframes spin {
     from {

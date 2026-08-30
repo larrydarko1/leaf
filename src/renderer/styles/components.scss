@@ -1,14 +1,11 @@
-/**
- * Shared component patterns
- *
- * Reusable style patterns that appear in 2+ unrelated components.
- * Promote a pattern here only once it's duplicated — component-specific
- * styles stay scoped in the SFC.
- */
+// Shared component patterns
+// Reusable style patterns that appear in 2+ unrelated components.
+// Promote a pattern here only once it's duplicated — component-specific
+// styles stay scoped in the SFC.
 
 @use '@/renderer/styles/variables' as *;
 
-/* ––––– Scrollbar ––––– */
+// –– Scrollbar ––––––––––––––––––––
 
 @mixin scrollbar($width: $size-3, $show-on-hover: false) {
     &::-webkit-scrollbar {

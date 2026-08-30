@@ -1,16 +1,11 @@
-/**
- * Design tokens and variables
- *
- * All design system variables (colors, spacing, typography, sizing, etc.)
- * Auto-injected into every Vue SFC via electron.vite.config.ts
- */
+// Design tokens and variables
+// All design system variables (colors, spacing, typography, sizing, etc.)
+// Auto-injected into every Vue SFC via electron.vite.config.ts
 
-/* ––––– Dark theme fallback ––––– */
+// –– Dark theme fallback ––––––––––––––––––––
 
-/**
- * Applied on first paint before JS loads the user's active theme. 
- * Matches assets/themes/dark.json. Must stay in sync.
- */
+// Applied on first paint before JS loads the user's active theme.
+// Matches assets/themes/dark.json. Must stay in sync.
 
 :root {
     --text1: #fff;
@@ -44,7 +39,7 @@
     --grid-color: rgb(255 255 255 / 6%);
 }
 
-/* ––––– Typography ––––– */
+// –– Typography ––––––––––––––––––––
 
 $font-family: 'Helvetica', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
 $font-family-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Menlo', 'Consolas', 'DejaVu Sans Mono', monospace;
@@ -54,13 +49,13 @@ $font-weight-medium: 500;
 $font-weight-semibold: 600;
 $font-weight-bold: 700;
 
-/* –––––– Letter spacing scale –––––– */
+// –– Letter spacing scale ––––––––––––––––––––
 
 $letter-spacing-tight: -0.02em;
 $letter-spacing-wide: 0.02em;
 $letter-spacing-wider: 0.04em;
 
-/* –––––– Font size scale –––––– */
+// –– Font size scale ––––––––––––––––––––
 
 $font-size-xxs: 0.625rem;
 $font-size-xs: 0.75rem;
@@ -72,7 +67,7 @@ $font-size-2xl: 2rem;
 $font-size-3xl: 3rem;
 $font-size-4xl: 5rem;
 
-/* ––––– Spacing ––––– */
+// –– Spacing ––––––––––––––––––––
 
 $space-0: 0.125em;
 $space-1: 0.25em;
@@ -86,19 +81,19 @@ $space-8: 2.5em;
 $space-9: 3em;
 $space-10: 4em;
 
-/* –––––– Border widths –––––– */
+// –– Border widths ––––––––––––––––––––
 
 $border-width-thin: 1px solid;
 $border-width-md: 2px dashed;
 $border-width-thick: 3px solid;
 
-/* –––––– Backdrop effects –––––– */
+// –– Backdrop effects ––––––––––––––––––––
 
 $backdrop-blur-xs: 4px;
 $backdrop-blur-sm: 8px;
 $backdrop-blur-md: 20px;
 
-/* –––––– Component sizes –––––– */
+// –– Component sizes ––––––––––––––––––––
 
 $size-0: 2px;
 $size-1: 3px;
@@ -133,7 +128,7 @@ $size-29: 480px;
 $size-30: 560px;
 $size-31: 720px;
 
-/* –––––– Opacity scale –––––– */
+// –– Opacity scale ––––––––––––––––––––
 
 $opacity-lowest: 0.3;
 $opacity-low: 0.4;
@@ -144,14 +139,14 @@ $opacity-higher: 0.8;
 $opacity-highest: 0.85;
 $opacity-almost-opaque: 0.9;
 
-/* –––––– Transform values –––––– */
+// –– Transform values ––––––––––––––––––––
 
 $scale-hover-sm: 0.95;
 $scale-hover: 1.08;
 $scale-hover-mid: 1.12;
 $scale-hover-lg: 1.2;
 
-/* –––––– Shadows –––––– */
+// –– Shadows ––––––––––––––––––––
 
 $shadow-sm: 0 2px 8px rgb(0 0 0 / 15%);
 $shadow-md: 0 6px 20px rgb(0 0 0 / 20%);
@@ -165,7 +160,7 @@ $shadow-dropdown:
 $red-shadow: 0 2px 12px rgb(229 62 62 / 40%);
 $accent-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 10%, transparent);
 
-/* ––––– Layout ––––– */
+// –– Layout ––––––––––––––––––––
 
 $border-radius-xs: 0.1875em;
 $border-radius-sm: 0.25em;
@@ -174,14 +169,14 @@ $border-radius-lg: 0.5em;
 $border-radius-xl: 0.75em;
 $border-radius-round: 9999em;
 
-/* ––––– Motion ––––– */
+// –– Motion ––––––––––––––––––––
 
 $transition-instant: 0.05s linear;
 $transition-fast: 0.12s ease;
 $transition-base: 0.2s ease;
 $transition-slow: 0.35s ease;
 
-/* ––––– Z-index scale ––––– */
+// –– Z-index scale ––––––––––––––––––––
 
 $z-negative: -1;
 $z-normal: 1;
@@ -192,9 +187,9 @@ $z-overlay: 100;
 $z-max: 1000;
 $z-extreme: 10000;
 
-/* –––––––––– SCSS ALIASES –––––––––– */
+// –– SCSS ALIASES ––––––––––––––––––––
 
-/* ––– Maps CSS custom properties to SCSS variables for use in components. ––– */
+// –– Maps CSS custom properties to SCSS variables for use in components. ––––––––––––––––––––
 
 $text1: var(--text1);
 $text2: var(--text2);
