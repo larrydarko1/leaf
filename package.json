@@ -116,7 +116,7 @@
         "stylelint-config-standard-scss": "^17.0.0",
         "stylelint-declaration-strict-value": "^1.11.1",
         "stylelint-scss": "^7.2.0",
-        "typescript": "~6.0.2",
+        "typescript": "~7.0.2",
         "typescript-eslint": "^8.58.1",
         "vite": "^7.0.0",
         "vitest": "^4.1.4",
