@@ -1,13 +1,8 @@
-# leaf.
-
-![Issues](https://img.shields.io/github/issues/larrydarko1/leaf)
-![Pull Requests](https://img.shields.io/github/issues-pr/larrydarko1/leaf)
+<img src="public/banner.png">
 
 If you find Leaf useful, consider [giving it a star ⭐](https://github.com/larrydarko1/leaf) — it helps others discover the project!
 
 Leaf is a **local-first, privacy-focused note-taking app** for desktop built with **Electron**, **Vue 3**, and TypeScript. Inspired by [Obsidian](https://obsidian.md) and [LM Studio](https://lmstudio.ai), Leaf provides a clean, distraction-free environment for managing your notes with local AI capabilities. All your data stays on your device - no cloud, no database, no tracking.
-
-> **IMPORTANT:** This app runs natively on **macOS and Linux**. All notes are stored in your local vault folder and never leave your device.
 
 # Demo
 
@@ -37,7 +32,6 @@ Leaf is a **local-first, privacy-focused note-taking app** for desktop built wit
 - **Chat interface** - Built-in chat panel with streaming responses
 - **Conversation history** - All chats are automatically saved as JSON and can be browsed, loaded, renamed, or deleted
 - **Conversation restore** - Reloading a model or switching conversations automatically restores context so the AI remembers what you discussed
-- **Auto context compaction** - When token memory reaches 90%, the AI automatically summarizes the conversation and frees context space — no data is lost, all messages stay visible
 - **Note-aware context** - Toggle to include the current note as context for AI queries
 - **Editable system prompts** - Pick from bundled templates or hand-edit Markdown files in `~/.leaf/prompts/` to customise the AI’s personality and behaviour
 - **Model management** - Load and unload GGUF models from a dedicated models folder (`~/.leaf/models/`)
@@ -64,7 +58,7 @@ Leaf is built with privacy and security as core principles:
 
 ### Privacy Guarantees
 
-- **No telemetry** - We don't collect any usage data, analytics, or crash reports
+- **No telemetry** - No collection of any usage data, analytics, or crash reports
 - **No network requests** - The app makes no outbound connections; no note data or usage data is ever transmitted
 - **No cloud sync** - Your notes never leave your device unless you explicitly copy them
 - **No accounts** - No sign-ups, logins, or user tracking of any kind
@@ -79,7 +73,7 @@ Leaf is built with privacy and security as core principles:
 
 ### Reporting Security Issues
 
-If you discover a security vulnerability, do not open a public issue. Email the maintainer at <hello@larrydarko.dev> — see [SECURITY.md](.github/SECURITY.md) for scope and what to expect.
+If you discover a security vulnerability, **do not open a public issue.** Email the maintainer at <hello@larrydarko.dev> — see [SECURITY.md](.github/SECURITY.md) for scope and what to expect.
 
 ## Data Storage
 
@@ -140,6 +134,7 @@ Leaf supports multiple languages. Currently available:
 
 - **Chinese (simplified)**
 - **English** (default)
+- **Brainrot**
 - **Esperanto**
 - **French**
 - **German**
@@ -169,8 +164,8 @@ Language file format — translation keys are grouped, and a `meta` block descri
 ```json
 {
     "meta": {
-        "name": "Français",
-        "dictationLanguage": "fr"
+        "name": "Français", // display name
+        "dictationLanguage": "fr" // used for whisper language detection for dictation
     },
     "app": {
         "select_folder": "Sélectionner un dossier"
@@ -255,12 +250,18 @@ curl -L -o models/whisper/Xenova/whisper-base/onnx/decoder_model_merged_quantize
 Once the files are in place, dictation works fully offline — no cloud or API keys needed.
 
 Recommended models for getting started:
-| Model | Size | RAM Needed | Best For |
-|-------|------|------------|----------|
-| Llama 3.2 1B Q4 | ~0.7 GB | ~2 GB | Fast, lightweight tasks |
-| Llama 3.2 3B Q4 | ~2 GB | ~4 GB | Good balance of speed and quality |
-| Phi-3 Mini 3.8B Q4 | ~2.3 GB | ~4 GB | Strong reasoning |
-| Llama 3.1 8B Q4 | ~4.5 GB | ~8 GB | Best quality |
+| Model Name | Size (Q4_K_M) | System RAM | VRAM (GPU) | Context Window | Best For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Qwen 3.5 4B** | ~2.9 GB | ~4 GB | ~3.5 GB | 256K | **Vision + Text**: Multimodal reasoning |
+| **Llama 3.2 3B** | ~2.0 GB | ~4 GB | ~3 GB | 128K | Fast general assistant, robust ecosystem |
+| **Qwen 3.5 7B** | ~4.6 GB | ~8 GB | ~6 GB | 128K | **Best All-Rounder**: Superior coding/math |
+| **Llama 3.3 8B** | ~5.0 GB | ~8 GB | ~6 GB | 128K | **Best Instruction Following**: Chat, general tasks |
+| **Mistral Nemo 12B** | ~7.0 GB | ~12 GB | ~8 GB | 128K | Large context, coding, tool use |
+| **Qwen 3.5 14B** | ~9.5 GB | ~16 GB | ~10 GB | 128K | Advanced reasoning, complex analysis |
+| **Phi-4 14B** | ~9.8 GB | ~16 GB | ~11 GB | 128K | High-end reasoning, logic puzzles |
+| **Gemma 4 9B** | ~6.0 GB | ~12 GB | ~8 GB | 128K | Creative tasks, multimodal (vision/audio) |
+| **Qwen 3.8 27B** | ~16.8 GB | ~32 GB | ~17 GB | 262K | **Flagship Local**: Near-api quality, multimodal |
+| **Qwen 3.8 32B** | ~20.5 GB | ~32 GB | ~21 GB | 128K | High-performance single-GPU (24GB+ VRAM) |
 
 ### App Settings
 
@@ -327,7 +328,7 @@ npm run format
 
 Tests live in the `tests/` directory and mirror the `src/` structure. The CI pipeline runs type-checking, building, and all tests on every push and pull request — the release pipeline only triggers if CI passes.
 
-> **No E2E tests:** Playwright's Electron support is experimental and broken for Electron 30+ (`--remote-debugging-port` was removed as a valid CLI flag, and the workaround requires patching application code). Unit test coverage sits above 80% across all branches and keeps the CI feedback loop fast. E2E support should be revisited once Playwright ships a stable fix for Electron 30+.
+> **No E2E tests:** Playwright's Electron support remains experimental and broken for Electron 30+ (as of 2026). The --remote-debugging-port flag was removed from the CLI in Electron 30, and the only reliable workaround requires patching your Electron application code via app.commandLine.appendSwitch(). Unit test coverage sits above 80% across all branches and keeps the CI feedback loop fast. E2E support should be revisited once Playwright ships a stable fix for Electron 30+.
 
 ### Building for Production
 
@@ -551,7 +552,3 @@ From v2.0.0 onward, this project is licensed under the [GNU Affero General Publi
 
 - Inspired by [Obsidian](https://obsidian.md/) for the vault-based note-taking approach
 - Local AI powered by [llama.cpp](https://github.com/ggml-org/llama.cpp) and [node-llama-cpp](https://github.com/withcatai/node-llama-cpp)
-
----
-
-**Made with Vue 3, Electron, and a passion for local-first software.**
